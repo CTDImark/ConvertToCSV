@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Convert to CSV</title>
+<link rel="stylesheet" href="">
+<script>
+window.addEventListener('DOMContentLoaded', () => init());
+
+function init() {
+  document.getElementById("convert").addEventListener("click", convert);
+  document.getElementById("list").focus();
+}
+
+function convert() {
+  let text = document.getElementById("list");
+  let list = text.value.replace(/\n$/,"");
+  if (document.getElementById("quote").checked) 
+    list = `'${list.replace(/\n/g,"','")}'`;
+  else
+    list = list.replace(/\n/g,",");
+  text.value = list;
+  text.select();
+  navigator.clipboard.writeText(text.value);
+  text.setSelectionRange(0,0);
+}
+</script>
+</head>
+
+<body>
+<h3>Convert to CSV</h3>
+<p><label><input type="checkbox" id="quote" checked /> Wrap in Single Quotes</label> &nbsp; &nbsp;
+<input type="button" id="convert" value="Convert &amp; Copy" /></p>
+<textarea id="list" cols="60" rows="20" style="vertical-align: middle"></textarea>
+</body>
+
+</html>
