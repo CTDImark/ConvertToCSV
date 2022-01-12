@@ -9,29 +9,50 @@
 window.addEventListener('DOMContentLoaded', () => init());
 
 function init() {
-  document.getElementById("convert").addEventListener("click", convert);
+  setQuotes();
+  document.getElementById("convert").addEventListener("click", () => convert(false));
+  document.getElementById("convertCopy").addEventListener("click", () => convert(true));
   document.getElementById("list").focus();
 }
 
-function convert() {
+function convert(copy) {
   let text = document.getElementById("list");
-  let list = text.value.replace(/\n$/,"");
-  if (document.getElementById("quote").checked) 
-    list = `'${list.replace(/\n/g,"','")}'`;
-  else
-    list = list.replace(/\n/g,",");
+  let list = text.value.replace(/(^\s+)|(\s+$)/g,"");
+  list = list.replace(/ *[,\t\n] */g,"\n");
+  list = list.replace(/\n\n+/g,"\n");
+  if (document.getElementById("wrap").checked) {
+    let wrap = document.getElementById("quotes").value.split(",");
+    if (wrap.length==1) wrap[1] = wrap[0];
+    list = wrap[0]+list.replace(/\n/g,wrap[1]+","+wrap[0])+wrap[1];
+  } else list = list.replace(/\n/g,",");
   text.value = list;
-  text.select();
-  navigator.clipboard.writeText(text.value);
-  text.setSelectionRange(0,0);
+  if (copy) {
+    text.select();
+    navigator.clipboard.writeText(text.value);
+    text.setSelectionRange(0,0);
+  }
+  text.focus();
+}
+
+function setQuotes(selQuotes) {
+  if (!selQuotes) selQuotes = document.getElementById("quote");
+  let text = document.getElementById("quotes");
+  text.disabled = selQuotes.selectedOptions[0].innerText != "Custom";
+  if (!text.disabled) text.focus();
+  text.value = selQuotes.value;
 }
 </script>
 </head>
 
 <body>
 <h3>Convert to CSV</h3>
-<p><label><input type="checkbox" id="quote" checked /> Wrap in Single Quotes</label> &nbsp; &nbsp;
-<input type="button" id="convert" value="Convert &amp; Copy" /></p>
+<p><label><input type="checkbox" id="wrap" /> Wrap in</label>
+<select id="quote" onchange="setQuotes(this)">
+<option value="&quot;">Double Quotes</option><option value="'">Single Quotes</option>
+<option value="[,]">Square Brackets</option><option value="(',')">Custom</option></select>
+<input type="text" id="quotes" style="width: 30px" /> &nbsp; &nbsp;
+<input type="button" id="convert" value="Convert" />
+<input type="button" id="convertCopy" value="Convert &amp; Copy" /></p>
 <textarea id="list" cols="60" rows="20" style="vertical-align: middle"></textarea>
 </body>
 
