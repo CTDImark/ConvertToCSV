@@ -1,2 +1,2 @@
 # ConvertToCSV
-Convert line-separated entries to CSV.
+Convert line-, tab-, or comma-separated entries to CSV.
