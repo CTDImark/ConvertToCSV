@@ -25,6 +25,8 @@ function convert() {
   }
   list = list.replace(/ *[,\t\r\n] */g,'\n');
   list = list.replace(/\n\n+/g,'\n');
+  let caseTo = document.getElementById('case').selectedOptions[0].value;
+  if (['upper','lower'].includes(caseTo)) list = caseTo == 'upper' ? list.toUpperCase() : list.toLowerCase();
   let arrayList = list.split('\n');
   let msg = `${arrayList.length} found.`;
   if (document.getElementById('sort').checked) arrayList.sort();
@@ -39,8 +41,6 @@ function convert() {
     if (wrap.length==1) wrap[1] = wrap[0];
     list = wrap[0]+list.replace(/\n/g,wrap[1]+','+wrap[0])+wrap[1];
   } else list = list.replace(/\n/g,',');
-  let caseTo = document.getElementById('case').selectedOptions[0].value;
-  if (['upper','lower'].includes(caseTo)) list = caseTo == 'upper' ? list.toUpperCase() : list.toLowerCase();
   let text = document.getElementById('result');
   text.value = list;
   text.focus();
