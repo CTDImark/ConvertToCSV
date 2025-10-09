@@ -27,6 +27,7 @@ function convert() {
   list = list.replace(/\n\n+/g,'\n');
   let caseTo = document.getElementById('case').selectedOptions[0].value;
   if (['upper','lower'].includes(caseTo)) list = caseTo == 'upper' ? list.toUpperCase() : list.toLowerCase();
+  let delimiter = ({'comma': ',', 'tab': '\t', 'line': '\n'})[document.getElementById('delimiter').selectedOptions[0].value];
   let arrayList = list.split('\n');
   let msg = `${arrayList.length} found.`;
   if (document.getElementById('sort').checked) arrayList.sort();
@@ -39,8 +40,8 @@ function convert() {
   if (document.getElementById('wrap').checked) {
     let wrap = document.getElementById('quotes').value.split(',');
     if (wrap.length==1) wrap[1] = wrap[0];
-    list = wrap[0]+list.replace(/\n/g,wrap[1]+','+wrap[0])+wrap[1];
-  } else list = list.replace(/\n/g,',');
+    list = wrap[0]+list.replace(/\n/g,wrap[1]+delimiter+wrap[0])+wrap[1];
+  } else list = list.replace(/\n/g,delimiter);
   let text = document.getElementById('result');
   text.value = list;
   text.focus();
@@ -79,6 +80,8 @@ function setQuotes(selQuotes) {
 <input type="text" id="quotes" style="width: 30px" /> &nbsp; &nbsp;
 <label>Convert Case</label> <select id="case"><option value="none">No</option>
 <option value="upper">TO UPPER</option><option value="lower">to lower</option></select> &nbsp; &nbsp;
+<label>Delimiter</label> <select id="delimiter"><option value="comma">Comma</option>
+<option value="tab">Tab</option><option value="line">Line</option></select> &nbsp; &nbsp;
 <label><input type="checkbox" id="sort" checked /> Sort</label> &nbsp; &nbsp;
 <label><input type="checkbox" id="unique" checked /> Remove Duplicates</label> &nbsp; &nbsp;
 <input type="button" id="convert" value="Convert" /> <input type="button" id="copyResult" value="Copy Result" />
