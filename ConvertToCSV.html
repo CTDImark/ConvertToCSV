@@ -71,7 +71,8 @@ function setQuotes(selQuotes) {
 </head>
 
 <body>
-<h3>Convert Text (Line-, Tab- and/or Comma-Separated) to CSV</h3>
+<h3>Convert Text (Line-, Tab- and/or Comma-Separated) to <select id="delimiter" style="font-size: 16px"><option value="comma">CSV (Comma-Separated)</option>
+<option value="tab">TSV (Tab-Separated)</option><option value="line">LSV (Line-Separated)</option></select></h3>
 <p><label><input type="checkbox" id="wrap" /> Wrap in</label>
 <select id="quote" onchange="setQuotes(this)">
 <option value="&quot;">Double Quotes</option><option value="'" selected>Single Quotes</option>
@@ -80,8 +81,6 @@ function setQuotes(selQuotes) {
 <input type="text" id="quotes" style="width: 30px" /> &nbsp; &nbsp;
 <label>Convert Case</label> <select id="case"><option value="none">No</option>
 <option value="upper">TO UPPER</option><option value="lower">to lower</option></select> &nbsp; &nbsp;
-<label>Delimiter</label> <select id="delimiter"><option value="comma">Comma</option>
-<option value="tab">Tab</option><option value="line">Line</option></select> &nbsp; &nbsp;
 <label><input type="checkbox" id="sort" checked /> Sort</label> &nbsp; &nbsp;
 <label><input type="checkbox" id="unique" checked /> Remove Duplicates</label> &nbsp; &nbsp;
 <input type="button" id="convert" value="Convert" /> <input type="button" id="copyResult" value="Copy Result" />
